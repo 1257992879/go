@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-
+<!--    :style="{backgroundImage: 'url(' +backgroundImgUrl+ ')'}"       -->
     <div id="bg-image"></div>
     <TopView :website-item-list="websiteItemList" @networkEnvChange="networkEnv=$event"></TopView>
     <ListView :website-item-list="websiteItemList" :network-env="networkEnv" :website-item-num="websiteItemNum"></ListView>
-    <EndView version="Version: 1.1"></EndView>
+    <EndView version="Version: 1.2 (beta)"></EndView>
   </div>
 </template>
 
@@ -26,7 +26,7 @@ html{
   height: 100%;
   position: fixed;
   z-index: -10;
-  background-image: url("https://baotangguo.cn:8081/");
+  background-image: url("https://api.isoyu.com/bing_images.php");
   background-color: dimgray;
   background-repeat: no-repeat;
   background-position: center;
@@ -46,7 +46,8 @@ export default {
     return{
       websiteItemList: {},
       networkEnv: "",
-      websiteItemNum: -1
+      websiteItemNum: -1,
+      backgroundImgUrl: ""
     }
   },
   components: {
@@ -55,6 +56,10 @@ export default {
     ListView
   },
   mounted() {
+    // //设置背景图，用日期做标记
+    // const date = new Date()
+    // this.backgroundImgUrl = 'https://api.isoyu.com/bing_images.php?date='+date.getFullYear()+'_'+(date.getMonth()+1)+'_'+date.getDate()
+
     //获取列表数据
     this.$axios.get("./website-list.json")
         .then((resp)=>{

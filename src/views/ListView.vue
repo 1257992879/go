@@ -78,7 +78,8 @@ export default {
   computed: {
     fillElementNum() {
       return function (itemNumInAType) {
-        const aLineNumber = Math.floor(this.displayWidth / this.itemWidth) //Math.floor()向下取整
+        let aLineNumber = Math.floor(this.displayWidth / this.itemWidth) //Math.floor()向下取整
+        if (aLineNumber===0) {aLineNumber = 1}
         let lastLineNumber = itemNumInAType % aLineNumber
         let addNumber;
         if (lastLineNumber === 0) {

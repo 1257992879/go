@@ -11,6 +11,7 @@
     "axios": "^1.1.3",
     "core-js": "^3.8.3",
     "element-ui": "^2.15.10",
+    "register-service-worker": "^1.7.2",
     "vue": "^2.6.14",
     "vue-router": "^3.5.1"
   },
@@ -19,6 +20,7 @@
     "@babel/eslint-parser": "^7.12.16",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-pwa": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "babel-plugin-component": "^1.1.1",
