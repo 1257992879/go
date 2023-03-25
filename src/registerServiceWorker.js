@@ -4,8 +4,15 @@ import { Notification } from 'element-ui'
 
 
 if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-  navigator.serviceWorker.addEventListener('controllerchange', function () {
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
     window.location.reload() //使用skipWaiting让新的sw接管了页面后会调用controllerchange事件，然后就刷新页面
+  });
+  navigator.serviceWorker.addEventListener('message', (even) => {
+    if (even.data === 'RefreshBackgroundImage') { //serviceWorker 完成缓存，需要刷新照片
+      console.log('刷新照片')
+      let event = new Event('documentRefreshBackgroundImage');
+      document.dispatchEvent(event)
+    }
   });
   register(`${process.env.BASE_URL}serviceWorker.js`, {
     ready () {

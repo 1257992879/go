@@ -3,6 +3,7 @@ import App from './App.vue'
 import axios from 'axios'
 
 import {Autocomplete, Radio, Row, Col, Tabs, TabPane, Button} from 'element-ui'
+import 'element-ui/lib/theme-chalk/base.css'
 import './registerServiceWorker'
 
 // Vue.component(Button.name, Button)

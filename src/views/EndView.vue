@@ -17,7 +17,16 @@ export default {
   data(){
     return {
       updateInfo:
-          "<span class='updateListTitleNew'>Version 1.1</span>" +
+          "<span class='updateListTitleNew'>Version 1.2</span>" +
+          "<span class='updateListDate'>2023年3月25日</span>" +
+          "<span class='updateListContext'>" +
+            "1.增加PWA(Progressive Web App)支持: 支持安装为应用、访问时使用缓存，让网页像本地应用一样运行<br>" +
+            "2.背景图在网页打开时会渐变变暗，形成暗角，不让背景图过亮与网页内容混在一起<br>" +
+            "3.修改了更新日志的样式<br>" +
+            "4.修复了一些bug(在网页宽度小于一个元素的宽度时报错无法显示 和 有时会出现的页面元素显示混乱)<br>" +
+          "</span>" +
+          "<br>" +
+          "<span class='updateListTitleOld'>Version 1.1</span>" +
           "<span class='updateListDate'>2022年11月22日</span>" +
           "<span class='updateListContext'>" +
             "1.将壁纸更新为1080P，并解决背景图加载卡住的问题(其实就是换了个链接)<br>" +

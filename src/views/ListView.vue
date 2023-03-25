@@ -92,13 +92,11 @@ export default {
     }
   },
   mounted() {
-    this.displayWidth = document.documentElement.clientWidth
-    window.onresize = ()=> {
+    //监听文档宽的变化
+    const resizeObserver = new ResizeObserver(() => { //监听元素大小改变  回调函数包含ResizeObserverEntry[]
       this.displayWidth = document.documentElement.clientWidth
-    }
-    onload = () => {
-      this.displayWidth = document.documentElement.clientWidth
-    }
+    });
+    resizeObserver.observe(document.documentElement);
   }
 }
 </script>
