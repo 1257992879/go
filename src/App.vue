@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <div id="bg-image" :style="{backgroundImage: 'url(' +backgroundImgUrl+ ')'}"></div>
+    <img id="bg-image" :src="backgroundImgUrl" alt="backgroundImage">
     <transition name="el-fade-in-linear">
-      <div id="bg-image" class="transition-box" v-show="newBGImgFlag" :style="{backgroundImage: 'url(' +newBackgroundImgUrl+ ')'}"></div>
+      <img id="bg-image" class="transition-box" v-show="newBGImgFlag" :src="newBackgroundImgUrl" alt="backgroundImage">
     </transition>
     <div id="cover" :style="{opacity: loadStatus}"></div>
     <TopView :website-item-list="websiteItemList" @networkEnvChange="networkEnv=$event"></TopView>
@@ -26,17 +26,10 @@ html{
 }
 #bg-image{
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: fixed;
   z-index: -10;
-  /*background-image: url("https://api.isoyu.com/bing_images.php");*/
-  /*background-image: url("http://192.168.1.137/bingImg");*/
-  background-color: dimgray;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  background-size: cover;
-  /*-webkit-background-size: cover;*/
+  object-fit: cover;
 }
 #cover {
   z-index: -5;
@@ -61,7 +54,6 @@ export default {
       websiteItemList: {},
       networkEnv: "",
       websiteItemNum: -1,
-      // backgroundImgUrl: "https://api.isoyu.com/bing_images.php",
       backgroundImgUrl: 'https://lxc.world:13312/bingImg',
       newBackgroundImgUrl: '',
       newBGImgFlag: false,
