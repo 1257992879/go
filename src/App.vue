@@ -23,6 +23,7 @@ body{
 }
 html{
   overflow: visible;
+    scroll-behavior: smooth;
 }
 #bg-image{
   width: 100%;
@@ -54,11 +55,11 @@ export default {
       websiteItemList: {},
       networkEnv: "",
       websiteItemNum: -1,
-      backgroundImgUrl: 'https://lxc.world:13312/bingImg',
+      backgroundImgUrl: 'https://api.lxc2.com:8/bingImg',
       newBackgroundImgUrl: '',
       newBGImgFlag: false,
       loadStatus: '0',
-      version: '1.2'
+      version: '1.3'
     }
   },
   components: {

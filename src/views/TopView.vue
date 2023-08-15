@@ -36,7 +36,7 @@
         <!-- 空行和类别导航栏 -->
         <el-col :span="24" :xs="0"><br><br></el-col>
         <el-col :span="24">
-          <el-tabs id="tabs" v-model="tabIndex" @tab-click="scrollToElement">
+          <el-tabs id="tabs" v-model="tabIndex" @tab-click="scrollToElement" style="padding: 0 10px">
             <el-tab-pane
                 v-for="(aType,index) in websiteItemList"
                 :key="index"
@@ -158,8 +158,8 @@ export default {
     },
     scrollToElement(tab) {
       // document.getElementById("aTitle1").scrollIntoView()
-      document.documentElement.scrollTop = document.getElementById("aTitle"+tab.index).offsetTop-10
-
+      // document.documentElement.scrollTop = document.getElementById("aTitle"+tab.index).offsetTop-10
+        window.scrollTo(0, document.getElementById("aTitle"+tab.index).offsetTop-10)
     }
   },
   mounted() {
@@ -177,6 +177,16 @@ export default {
       window.localStorage.setItem("site", "world.lxc.www.go.school")
     }
     this.$emit("networkEnvChange",this.networkEnv)
+
+    window.onscroll = () =>{
+        for (let i = this.websiteItemList.length-1; i >= 0; i--) {
+            if ( document.documentElement.scrollTop >= (document.getElementById("aTitle"+i).offsetTop-10) && this.tabIndex !== i+'' ) {
+                this.tabIndex = i+''
+                break
+            }
+        }
+    }
+
   },
   watch: {
     networkEnv: function(newVal) {

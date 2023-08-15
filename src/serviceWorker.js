@@ -2,8 +2,8 @@ import {precacheAndRoute} from 'workbox-precaching';
 // import {getCacheKeyForURL} from 'workbox-routing';
 
 const siteUrl = new URL(self.location)
-const bingImgUrl = 'https://lxc.world:13312/bingImg'
-const bingImgUrlKeyword = 'lxc.world:13312/bingImg'
+const bingImgUrl = 'https://api.lxc2.com:8/bingImg'
+const bingImgUrlKeyword = 'api.lxc2.com:8/bingImg'
 const bingImgCacheName = 'bingImg-' + siteUrl.origin + siteUrl.pathname.substring(0,siteUrl.pathname.lastIndexOf('/')+1)
 
 function precacheBingImg(resolve) {
