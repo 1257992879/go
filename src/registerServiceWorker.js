@@ -2,16 +2,16 @@
 import { register } from 'register-service-worker'
 import { Notification } from 'element-ui'
 
-
-if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
+                                    
+if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') { //判断浏览器是否支持serviceWorker  并且是生产环境(开发环境不加载serverWorker)  
+  navigator.serviceWorker.addEventListener('controllerchange', () => {  //监听controllerchange事件，如果监听到了说明sw文件发生了变化，需要刷新页面
     window.location.reload() //使用skipWaiting让新的sw接管了页面后会调用controllerchange事件，然后就刷新页面
   });
-  navigator.serviceWorker.addEventListener('message', (even) => {
+  navigator.serviceWorker.addEventListener('message', (even) => {  //监听message事件，如果监听到了说明sw文件发生了变化，需要刷新页面
     if (even.data === 'RefreshBackgroundImage') { //serviceWorker 完成缓存，需要刷新照片
       console.log('刷新照片')
       let event = new Event('documentRefreshBackgroundImage');
-      document.dispatchEvent(event)
+      document.dispatchEvent(event)   
     }
   });
   register(`${process.env.BASE_URL}serviceWorker.js`, {

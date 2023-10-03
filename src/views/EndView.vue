@@ -79,9 +79,8 @@ export default {
   padding: 5px 10px 5px 10px;
   cursor: pointer;
 }
-#info-context{
+/* #info-context{
   /*padding: 20px;*/
-}
 </style>
 
 
@@ -91,7 +90,7 @@ export default {
     height: 300px;
     overflow-y: scroll;
     padding: 0 5px;
-    //scrollbar-width: none;
+    /* scrollbar-width: none; */
 }
 /* 滚动条样式 */
 /*
