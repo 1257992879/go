@@ -1,12 +1,15 @@
-import {precacheAndRoute} from 'workbox-precaching';
-// import {getCacheKeyForURL} from 'workbox-routing';
+import { precacheAndRoute } from 'workbox-precaching';
 
-const siteUrl = new URL(self.location)
+
+declare let self: Window & ServiceWorkerGlobalScope
+
+
+const siteUrl = new URL(self.location.toString())
 const bingImgUrl = 'https://api.lxc2.com:8/bingImg'
 const bingImgUrlKeyword = 'api.lxc2.com:8/bingImg'
 const bingImgCacheName = 'bingImg-' + siteUrl.origin + siteUrl.pathname.substring(0,siteUrl.pathname.lastIndexOf('/')+1)
 
-function precacheBingImg(resolve) {
+function precacheBingImg(resolve: (value?: unknown) => void) {
 
     console.log('sw安装时 缓存必应每日一图')
     caches.open(bingImgCacheName).then((cache)=>{
@@ -27,22 +30,22 @@ function precacheBingImg(resolve) {
 
 }
 
-//传入Cache对象和URL对象     返回:  找到返回: Promise<Response>      找不到返回: undefined
-function findCache(cache, urlObj) {
+//传入Cache对象和URL对象     返回:  找到返回: Promise<Response>      找不到返回: Promise<undefined>
+function findCache(cache: Cache, urlObj: URL): Promise<Response|undefined> {
     return new Promise((resolve) => {
         cache.keys()
             .then((keys)=>{ //得到所有缓存key
                 let cacheFound = false
 
                 for (let i = 0; i < keys.length; i++) { //遍历所有key看看能不能找到匹配的缓存Request
-                    let cacheUrl = new URL(keys[i].url)
+                    const cacheUrl = new URL(keys[i].url)
                     if ((cacheUrl.origin===urlObj.origin) && //匹配上的规则: 1.请求的服务器、端口一样  2.访问的path一样  3.date参数一样
                         (cacheUrl.pathname===urlObj.pathname) &&
                         (cacheUrl.searchParams.get('date')===urlObj.searchParams.get('date'))
                     ) {
                         cacheFound = true;
                         cache.match(keys[i])
-                            .then((req)=>{resolve(req)}) //找到缓存: 返回cache.match()返回的Promise<Response>
+                            .then((req)=>{resolve(req as Response)}) //找到缓存: 返回cache.match()返回的Promise<Response>
                             .catch(()=>{console.error('匹配上了但是cache.match()无法返回Response');resolve(undefined)})
                     }
                 }
@@ -62,7 +65,7 @@ precacheAndRoute(self.__WB_MANIFEST)
 console.log('[Service Worker] 资源缓存结束')
 
 
-self.addEventListener('install', (e)=>{
+self.addEventListener('install', (e: ExtendableEvent)=>{
     e.waitUntil(new Promise(precacheBingImg))
 })
 
@@ -73,8 +76,8 @@ self.addEventListener('message',  even => {
 })
 
 // precacheAndRoute后再监听fetch事件，只有没被precacheAndRoute的资源才会触发手动监听的事件
-self.addEventListener('fetch', (even) => {
-    even.respondWith((async ()=>{
+self.addEventListener('fetch', (even: FetchEvent) => {
+    even.respondWith((async (): Promise<Response>=>{
         if (even.request.url.includes(bingImgUrlKeyword)) {
             console.log('fetching bingImg: '+even.request.url)
 
@@ -97,7 +100,7 @@ self.addEventListener('fetch', (even) => {
                 return cachedResponse
             } else { //找不到
                 //尝试返回以前的照片
-                let cacheKeys = await cache.keys()
+                const cacheKeys = await cache.keys()
                 const signRequest = new Request(urlObj.href, {mode:'cors',credentials:'omit'})
 
                 //判断是否有旧缓存: 有旧返回旧的图片，没有就返回错误
@@ -111,9 +114,9 @@ self.addEventListener('fetch', (even) => {
                             //成功放入新图片后: 删除旧缓存图片
                             cacheKeys.forEach((key)=>{cache.delete(key)})
                             //触发事件，要求刷新背景图
-                            self.clients.matchAll().then((clients) => {
+                            self.clients.matchAll().then((clients: readonly Client[]) => {
                                 // console.log(clients)
-                                clients.forEach((client) => {
+                                clients.forEach((client: Client) => {
                                     // console.log(client);
                                     // if (client.url.includes('/a.html'))
                                     // client.postMessage('hello world' + client.id);
@@ -124,7 +127,7 @@ self.addEventListener('fetch', (even) => {
                     }).catch((error)=>{console.error('更新背景图失败: 网络错误: ');console.error(error)})
 
 
-                    return cache.match(cacheKeys[0])
+                    return await cache.match(cacheKeys[0]) as Response
                 } else { //没有旧图片: 发起网络请求获取新照片
                     console.log('没有旧照片，发起网络请求获取新照片')
 
