@@ -180,7 +180,7 @@ export default {
 
     window.onscroll = () =>{
         for (let i = this.websiteItemList.length-1; i >= 0; i--) {
-            if ( document.documentElement.scrollTop >= (document.getElementById("aTitle"+i).offsetTop-10) && this.tabIndex !== i+'' ) {
+            if ( document.documentElement.scrollTop >= (document.getElementById("aTitle"+i).offsetTop-10)) {
                 this.tabIndex = i+''
                 break
             }
