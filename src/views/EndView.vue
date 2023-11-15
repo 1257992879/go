@@ -8,7 +8,13 @@ defineProps<{
 
 const updateInfo = ref(
     "<div class='updateListBox'>"+
-    "<span class='updateListTitleNew'>Version 2.0</span>" +
+    "<span class='updateListTitleNew'>Version 2.1</span>" +
+    "<span class='updateListDate'>2023年11月15日</span>" +
+    "<span class='updateListContext'>" +
+    "1.点击标题左侧的纸飞机图标即可打开打开网站的动画<br>(原计划是在2.0时更新的)<br>" +
+    "</span>" +
+    "<br>" +
+    "<span class='updateListTitleOld'>Version 2.0</span>" +
     "<span class='updateListDate'>2023年11月11日</span>" +
     "<span class='updateListContext'>" +
     "<div style='text-align: center'>网站上线一年, 使用 Vue3+TS 重构 (原来是Vue2)</div>" +

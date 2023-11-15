@@ -11,7 +11,7 @@ defineProps<{
 
 
 <template>
-    <div id="titleBar">
+    <div id="titleBar" class="unselectable">
     <span id="titleBarContext">
         <font-awesome-icon :icon="iconClass" style="font-size: 15px; margin-right: 4px"></font-awesome-icon>
         <span>{{ titleName }}</span>

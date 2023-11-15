@@ -1,45 +1,171 @@
 <script lang="ts" setup>
 
+import {ref, watch} from 'vue'
 import type {WebsiteItem} from "@/types/WebsiteList";
+import {hideSlider, showSlider} from "@/utils/DocumentUtils";
 
-defineProps<{
+
+const props = defineProps<{
     networkEnv: string,
     websiteItem: WebsiteItem,
-
-    // link: string,
-    // imageSrc: string,
-    // name: string,
-    // desc: string,
-    // accessWay: string
+    openAnimation?: boolean
 }>()
+
+
+
+// a 标签元素
+const websiteEl = ref<HTMLDivElement>()
+
+// 要跳转的链接
+const link = ref(  (props.networkEnv==='1'&&props.websiteItem.accessWay==='VPN') ? props.websiteItem.vpnLink : props.websiteItem.link  )
+watch(()=>props.networkEnv, (newVal)=>{
+    link.value = (props.networkEnv==='1'&&props.websiteItem.accessWay==='VPN') ?
+        props.websiteItem.vpnLink :
+        props.websiteItem.link
+})
+
+
+
+
+function openWebsiteWithoutAnimation() {
+    window.open(link.value)
+}
+
+
+// --------------- 动画相关 ---------------
+// 判断元素是否已经处于动画中
+const animationElClickable = ref<boolean>(true)
+// 原来 a 标签的样式
+const elementStyle = ref('')
+// 动画 a 标签的样式
+const openAnimationStyle = ref('')
+// 网站照片的样式
+const imageStyle = ref('')
+// 网站标题的样式
+const titleStyle = ref('')
+// 网站标题元素
+const titleEl = ref<HTMLSpanElement>()
+// 需要消失的元素的样式
+const opacityZeroStyle = ref('')
+
+
+function openWebsiteWithAnimation() {
+    // 如果处于动画中则直接结束
+    if (!animationElClickable.value) return
+    animationElClickable.value = false
+
+    // 隐藏滑动条 body设为不可滑动
+    hideSlider()
+
+    // 800ms 后打开页面
+    setTimeout(()=>{
+        window.open(link.value)
+    }, 800)
+
+    // 点击的元素透明度设为0
+    elementStyle.value = 'opacity: 0;'
+
+    // 显示动画的元素覆盖上去
+    // @ts-ignore
+    openAnimationStyle.value = 'position: absolute; top:'+ (websiteEl.value?.offsetTop-10) +'px; left:'+ (websiteEl.value?.offsetLeft-10) +'px;'
+
+    // 留个缓冲时间
+    setTimeout(()=>{
+        // 展开到全屏
+        openAnimationStyle.value = 'position: absolute; width:calc(100vw - 2px); height:calc(100vh - 2px); top:'+document.documentElement.scrollTop+'px; left:0; margin:0; padding:0;'
+
+        // 照片移动到中间
+        // @ts-ignore
+        imageStyle.value = 'transition:transform 0.3s; width:74.25px; height:74.25px; transform:translateX(calc(50vw - 37.125px)) translateY(35vh);'
+
+        // 标题移动到中间
+        // @ts-ignore
+        titleStyle.value = 'transition:transform 0.3s, color 0.3s; transform:translateX(calc(-37.5vw - 8px + 50vw - '+titleEl.value?.clientWidth / 2+'px)) translateY(50vh);'
+
+        // 其他信息消失
+        opacityZeroStyle.value = 'opacity: 0;'
+
+        // 200ms 后 背景变色
+        setTimeout(()=>{
+            openAnimationStyle.value += ' background-color:var(--browser-background); border: 1px solid var(--browser-background);'
+            titleStyle.value += 'color:var(--color-text)'
+        }, 200)
+
+        // 1.5s 后 关闭动画
+        setTimeout(()=>{
+            stopOpenWebsiteAnimation()
+        }, 1500)
+    }, 50)
+}
+function stopOpenWebsiteAnimation() {
+
+    openAnimationStyle.value += ' opacity: 0;'
+    setTimeout(()=>{
+        openAnimationStyle.value = ''
+        opacityZeroStyle.value = ''
+        imageStyle.value = ''
+        titleStyle.value = ''
+        animationElClickable.value = true
+        showSlider()
+    }, 350)
+
+    elementStyle.value = ''
+
+}
+
+
+
 
 </script>
 
 
 <template>
-    <a id="item" :href="networkEnv==='1'&&websiteItem.accessWay==='VPN' ? websiteItem.vpnLink : websiteItem.link" target="_blank">
-
-
+<div style="display: inline-block">
+    <a id="item" :href="link" target="_blank" @click.prevent="openAnimation ? openWebsiteWithAnimation() : openWebsiteWithoutAnimation()" :style="elementStyle" ref="websiteEl">
         <el-row>
-            <el-col :span="9" style="text-align: center">
+            <el-col :span="9">
                 <img id="imageIcon" :src="websiteItem.imageUrl" :alt="websiteItem.name">
-                <span id="accessWay" v-if="websiteItem.accessWay==='仅内网'" style="background-color: rgb(245, 108, 108)">{{ websiteItem.accessWay }}</span>
-                <span id="accessWay" v-else-if="websiteItem.accessWay==='VPN'" style="background-color: rgb(103, 194, 58)">{{ websiteItem.accessWay }}</span>
-                <span id="accessWay" v-else-if="websiteItem.accessWay==='公网'" style="background-color: rgb(64, 158, 255)">{{ websiteItem.accessWay }}</span>
-                <span id="accessWay" v-else>{{ websiteItem.accessWay }}</span>
+                <div style="text-align:center">
+                    <span id="accessWay" v-if="websiteItem.accessWay==='仅内网'" style="background-color: rgb(245, 108, 108)">{{ websiteItem.accessWay }}</span>
+                    <span id="accessWay" v-else-if="websiteItem.accessWay==='VPN'" style="background-color: rgb(103, 194, 58)">{{ websiteItem.accessWay }}</span>
+                    <span id="accessWay" v-else-if="websiteItem.accessWay==='公网'" style="background-color: rgb(64, 158, 255)">{{ websiteItem.accessWay }}</span>
+                    <span id="accessWay" v-else>{{ websiteItem.accessWay }}</span>
+                </div>
             </el-col>
 
             <el-col :span="15">
                 <div style="margin-left: 8px">
-                    <span id="itemName">{{ websiteItem.name }}</span>
+                    <span id="itemName" ref="titleEl">{{ websiteItem.name }}</span>
                     <br>
                     <span id="itemDesc">{{ websiteItem.desc }}</span>
                 </div>
             </el-col>
         </el-row>
-
-
     </a>
+
+    <!-- 动画元素 -->
+    <a v-if="openAnimationStyle!==''" id="item" target="_blank" :style="openAnimationStyle" class="animationEl">
+        <el-row>
+            <el-col :span="9">
+                <img id="imageIcon" :src="websiteItem.imageUrl" :alt="websiteItem.name" :style="imageStyle">
+                <div style="text-align:center" class="animationEl" :style="opacityZeroStyle">
+                    <span id="accessWay" v-if="websiteItem.accessWay==='仅内网'" style="background-color: rgb(245, 108, 108)">{{ websiteItem.accessWay }}</span>
+                    <span id="accessWay" v-else-if="websiteItem.accessWay==='VPN'" style="background-color: rgb(103, 194, 58)">{{ websiteItem.accessWay }}</span>
+                    <span id="accessWay" v-else-if="websiteItem.accessWay==='公网'" style="background-color: rgb(64, 158, 255)">{{ websiteItem.accessWay }}</span>
+                    <span id="accessWay" v-else>{{ websiteItem.accessWay }}</span>
+                </div>
+            </el-col>
+
+            <el-col :span="15">
+                <div style="margin-left: 8px">
+                    <span id="itemName" :style="titleStyle">{{ websiteItem.name }}</span>
+                    <br>
+                    <span id="itemDesc" class="animationEl" :style="opacityZeroStyle">{{ websiteItem.desc }}</span>
+                </div>
+            </el-col>
+        </el-row>
+    </a>
+</div>
 </template>
 
 
@@ -49,7 +175,7 @@ defineProps<{
     height: 98px;
     margin: 10px;
 
-    background: rgba(240, 240, 240, 0.5);
+    background-color: rgba(240, 240, 240, 0.5);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     text-align: left;
@@ -62,6 +188,10 @@ defineProps<{
     color: black;
     overflow: hidden;
 }
+.animationEl {
+    z-index:10;
+    transition: width 0.3s, height 0.3s, top 0.3s, left 0.3s, background-color 0.3s, opacity 0.3s, color 0.3s;
+}
 
 #imageIcon {
     width: 100%;
@@ -70,6 +200,7 @@ defineProps<{
 }
 
 #itemName {
+    display: inline-block;
     font-size: 18px;
     white-space: nowrap;
 }

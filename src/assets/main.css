@@ -1,8 +1,36 @@
+/* 基本颜色 */
 :root {
-
+    --browser-white: rgb(247, 247, 247);
+    --browser-black: rgb(59, 59, 59);
 }
 
+/* 变量 */
+:root {
+    --browser-background: var(--browser-white);
+    --color-text: rgb(0,0,0);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --browser-background: var(--browser-black);
+        --color-text: var(--browser-white);
+    }
+}
 
 a {
     text-decoration: none;
+}
+
+
+.unselectable {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.selectable {
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
 }

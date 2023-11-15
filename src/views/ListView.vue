@@ -9,7 +9,8 @@ import type {WebsiteList} from "@/types/WebsiteList";
 defineProps<{
     websiteItemList: WebsiteList,
     networkEnv: string,
-    websiteItemNum: number
+    websiteItemNum: number,
+    openWebsiteAnimation?: boolean
 }>()
 
 
@@ -61,6 +62,7 @@ onMounted(() => {
             <WebsiteItem
               :website-item="item"
               :network-env="networkEnv"
+              :open-animation="openWebsiteAnimation"
             />
         </template>
 

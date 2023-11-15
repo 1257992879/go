@@ -6,11 +6,13 @@ import { $pinyinUtil } from "@/global";
 
 
 const props = defineProps<{
-    websiteItemList: WebsiteList
+    websiteItemList: WebsiteList,
+    openWebsiteAnimation?: boolean
 }>()
 
 const emit = defineEmits<{
-    (e: 'networkEnvChange', networkEnv: string): void
+    (e: 'networkEnvChange', networkEnv: string): void,
+    (e: 'titleIconClick'): void
 }>()
 
 
@@ -223,18 +225,23 @@ onUnmounted(()=>{
 
 
 defineExpose({switchNetworkEnv})
+
 </script>
 
 
 <template>
-    <div id="topView">
+    <div id="topView" class="unselectable">
         <div id="topViewBlock">
 
             <el-row id="topViewContext">
                 <!-- 标题 -->
                 <el-col id="topViewTitle" :span="6" :xs="15">
                     <div style="margin-top: 4px">
-                        <font-awesome-icon :icon="['fas', 'paper-plane']" style="font-size: 23px;margin-right: 4px" />
+                        <font-awesome-icon :icon="['fas', 'paper-plane']"
+                            id="goIcon"
+                            :class="{'iconActive':openWebsiteAnimation===true}"
+                            @click="emit('titleIconClick')"
+                        />
                         <span>学校常用网站</span>
                     </div>
                 </el-col>
@@ -338,6 +345,15 @@ defineExpose({switchNetworkEnv})
     /*text-align: center;*/
     font-size: 25px;
     font-weight: bold;
+}
+
+#goIcon {
+    font-size: 23px;
+    margin-right: 4px;
+    cursor: pointer;
+}
+.iconActive {
+    color: rgb(88,159,248);
 }
 
 /* 搜索框 */

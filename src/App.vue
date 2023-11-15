@@ -22,6 +22,26 @@ const backgroundImageStyle = ref<string>('transform: scale(1.1);')
 const topViewEl = ref<HTMLDivElement>()
 
 
+// --------------- 打开网站动画 ---------------
+const openAnimation = ref<boolean>(false)
+if (localStorage.getItem('openAnimation')==='true') {
+    openAnimation.value = true
+} else {
+    openAnimation.value = false
+    localStorage.setItem('openAnimation', 'false')
+}
+watch(openAnimation, (newVal)=>{
+    if (newVal) {
+        localStorage.setItem('openAnimation', 'true')
+    } else {
+        localStorage.setItem('openAnimation', 'false')
+    }
+})
+function titleIconClick() {
+    openAnimation.value = !openAnimation.value
+}
+
+
 onMounted(()=>{
     //获取列表数据
     $axios.get("./website-list.json")
@@ -84,13 +104,36 @@ onMounted(()=>{
 
 <template>
     <div id="app">
-        <img id="bg-image" :src="backgroundImgUrl" alt="backgroundImage" :style="loadStatus?'':backgroundImageStyle">
-        <transition name="el-fade-in-linear">
-            <img id="bg-image" class="transition-box" v-show="newBGImgFlag" :src="newBackgroundImgUrl" alt="backgroundImage" :style="loadStatus?'':backgroundImageStyle">
-        </transition>
+        <img id="bg-image"
+             :src="backgroundImgUrl"
+             alt="backgroundImage"
+             :style="loadStatus?'':backgroundImageStyle">
+        <Transition name="el-fade-in-linear">
+            <img id="bg-image"
+                 class="transition-box"
+                 v-show="newBGImgFlag"
+                 :src="newBackgroundImgUrl"
+                 alt="backgroundImage"
+                 :style="loadStatus?'':backgroundImageStyle">
+        </Transition>
         <div id="cover" :style="loadStatus?'':backgroundCoverStyle"></div>
-        <TopView :website-item-list="websiteItemList" @networkEnvChange="networkEnv=$event" ref="topViewEl"></TopView>
-        <ListView :website-item-list="websiteItemList" :network-env="networkEnv" :website-item-num="websiteItemNum"></ListView>
+
+
+        <TopView
+            :website-item-list="websiteItemList"
+            @networkEnvChange="networkEnv=$event"
+            ref="topViewEl"
+            :open-website-animation="openAnimation"
+            @title-icon-click="titleIconClick"
+        ></TopView>
+
+        <ListView
+            :website-item-list="websiteItemList"
+            :network-env="networkEnv"
+            :website-item-num="websiteItemNum"
+            :open-website-animation="openAnimation"
+        ></ListView>
+
         <EndView :version="'Version: ' + version"></EndView>
     </div>
 </template>
