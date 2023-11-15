@@ -119,7 +119,7 @@ export default defineConfig({
                     },
                     {
                         url: 'WebsiteIcon/acm.neusoft.edu.cn.ico',
-                        revision: 'v1'
+                        revision: 'v2'
                     },
                     {
                         url: 'WebsiteIcon/cps.front.neucoding.com.png',
