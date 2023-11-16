@@ -108,9 +108,8 @@ onMounted(()=>{
              :src="backgroundImgUrl"
              alt="backgroundImage"
              :style="loadStatus?'':backgroundImageStyle">
-        <Transition name="el-fade-in-linear">
+        <Transition>
             <img id="bg-image"
-                 class="transition-box"
                  v-show="newBGImgFlag"
                  :src="newBackgroundImgUrl"
                  alt="backgroundImage"
