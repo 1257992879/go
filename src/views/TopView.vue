@@ -3,7 +3,7 @@ import {ref, onMounted, watch, onUnmounted} from 'vue'
 import {type WebsiteList} from '@/types/WebsiteList'
 import { $pinyinUtil } from "@/global";
 
-
+const fly = ref()
 
 const props = defineProps<{
     websiteItemList: WebsiteList,
@@ -188,7 +188,12 @@ function keydownHandler(event: KeyboardEvent) {
         }
     }
 }
+
+    //log出fly的位置
+    
+    
 onMounted(() => {
+    
     //检查localStorage   更新网络环境选项
     let site;
     let networkEnvTemp;
@@ -218,6 +223,8 @@ onMounted(() => {
     // 监听键盘点击 "/"
     document.addEventListener("keydown", keydownHandler)
 
+    console.log('Offset Top:', fly.value?.offsetTop);
+    console.log('Offset Left:', fly.value?.offsetLeft);
 })
 onUnmounted(()=>{
     document.removeEventListener("keydown", keydownHandler)
@@ -236,14 +243,16 @@ defineExpose({switchNetworkEnv})
             <el-row id="topViewContext">
                 <!-- 标题 -->
                 <el-col id="topViewTitle" :span="6" :xs="15">
-                    <div style="margin-top: 4px">
+                    <!-- lyh 11/16 -->
+                    <div style="margin-top: 4px" ref="fly">
                         <font-awesome-icon :icon="['fas', 'paper-plane']"
                             id="goIcon"
-                            :class="{'iconActive':openWebsiteAnimation===true}"
-                            @click="emit('titleIconClick')"
-                        />
-                        <span>学校常用网站</span>
+                            :class="{'iconActive': openWebsiteAnimation, 'falseIconActive': !openWebsiteAnimation}"
+                            @click="emit('titleIconClick')"    
+                        /> 
+                        <span id="sideIconTitle">学校常用网站</span>
                     </div>
+                    <!-- lyh 11/16 -->
                 </el-col>
                 <el-col :span="0" :xs="9">
                     <div style="margin: 6px 0 0 0; text-align: center">
@@ -319,6 +328,7 @@ defineExpose({switchNetworkEnv})
 
 
 <style scoped>
+
 /* 顶栏块元素 */
 #topView {
     height: 150px;
@@ -351,9 +361,18 @@ defineExpose({switchNetworkEnv})
     font-size: 23px;
     margin-right: 4px;
     cursor: pointer;
+    transition: 0.8s;
 }
 .iconActive {
+    animation: flying 0.9s;
+    -webkit-animation: flying 1s; /* Safari 与 Chrome */
     color: rgb(88,159,248);
+}
+
+.falseIconActive{
+    animation: noFlying 1s;
+    -webkit-animation: noFlying 1s;
+    color: white;
 }
 
 /* 搜索框 */
@@ -405,6 +424,40 @@ defineExpose({switchNetworkEnv})
 
 :deep(.el-tabs__nav-wrap::after) {
     background-color: rgba(228, 231, 237, 0.3);
+}
+
+/* flying 动画 */
+@keyframes flying
+{
+    0%   {position: relative; top:0;left: 0;color: white}
+    60%  {position: relative; top:-60px;left: 40px; color: white }
+    61%  {position: relative; top:42px;left: -40px; color: rgb(88,159,248); }
+    100% {position: relative; top:0;left: 0; color: rgb(88,159,248);}
+}
+
+@-webkit-keyframes flying 
+{
+    0%   {position: relative; top:0;left: 0;color: white}
+    60%  {position: relative; top:-60px;left: 40px; color: white }
+    61%  {position: relative; top:42px;left: -40px; color: rgb(88,159,248); }
+    100% {position: relative; top:0;left: 0; color: rgb(88,159,248);}
+}
+@keyframes noFlying
+{
+    0%   {position: relative; top:0;left: 0;}
+    25%  {position: relative; top:3px;left: 2px;  }
+    50%  {position: relative; top:-3px;left: -2px; }
+    75%  {position: relative; top:3px;left: 2px;}
+    100% {position: relative; top:0;left: 0;}
+}
+ 
+@-webkit-keyframes noFlying 
+{
+    0%   {position: relative; top:0;left: 0;}
+    25%  {position: relative; top:3px;left: 2px;  }
+    50%  {position: relative; top:-3px;left: -2px; }
+    75%  {position: relative; top:3px;left: 2px;}
+    100% {position: relative; top:0;left: 0;}
 }
 </style>
 
