@@ -115,7 +115,7 @@ export default defineConfig({
                 additionalManifestEntries: [
                     {
                         url: 'website-list.json',
-                        revision: 'v1'
+                        revision: 'v2'
                     },
                     {
                         url: 'WebsiteIcon/acm.neusoft.edu.cn.ico',
@@ -147,10 +147,6 @@ export default defineConfig({
                     },
                     {
                         url: 'WebsiteIcon/itestcloud.unipus.cn.png',
-                        revision: 'v1'
-                    },
-                    {
-                        url: 'WebsiteIcon/jst.neusoft.edu.cn.ico',
                         revision: 'v1'
                     },
                     {

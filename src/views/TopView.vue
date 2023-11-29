@@ -366,7 +366,7 @@ defineExpose({switchNetworkEnv})
     font-size: 23px;
     margin-right: 4px;
     cursor: pointer;
-    transition: 0.8s;
+    transition: color 0.8s;
 }
 .iconActive {
     color: var(--icon-active);
