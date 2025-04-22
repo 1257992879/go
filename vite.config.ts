@@ -115,7 +115,7 @@ export default defineConfig({
                 additionalManifestEntries: [
                     {
                         url: 'website-list.json',
-                        revision: 'v3'
+                        revision: 'v5'
                     },
                     {
                         url: 'WebsiteIcon/acm.neusoft.edu.cn.ico',

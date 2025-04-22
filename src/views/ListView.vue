@@ -4,6 +4,7 @@ import {ref, computed, onMounted} from 'vue'
 import TitleBar from "@/components/TitleBar.vue";
 import WebsiteItem from "@/components/WebsiteItem.vue";
 import type {WebsiteList} from "@/types/WebsiteList";
+import ListWithAnimation from "@/components/ListWithAnimation.vue";
 
 
 defineProps<{
@@ -15,22 +16,26 @@ defineProps<{
 
 
 const displayWidth = ref(0)
+const displayPaddingLeftRight = ref(10)
 const itemWidth = ref(230)
-const itemHeight = ref(130)
+// const itemHeight = ref(130)
 
 
 const fillElementNum = computed(() => {
-    return (itemNumInAType: number) => {
-        let aLineNumber = Math.floor(displayWidth.value / itemWidth.value) //Math.floor()向下取整
-        if (aLineNumber === 0) {
-            aLineNumber = 1
+    return (itemNumInOneType: number) => {
+        let oneLineNumber = Math.floor((displayWidth.value - 2*displayPaddingLeftRight.value) / itemWidth.value) //Math.floor()向下取整
+
+        if (itemNumInOneType > oneLineNumber) return 0
+
+        if (oneLineNumber === 0) {
+            oneLineNumber = 1
         }
-        let lastLineNumber = itemNumInAType % aLineNumber
+        let lastLineNumber = itemNumInOneType % oneLineNumber
         let addNumber;
         if (lastLineNumber === 0) {
-            lastLineNumber = aLineNumber
+            lastLineNumber = oneLineNumber
         }
-        addNumber = aLineNumber - lastLineNumber
+        addNumber = oneLineNumber - lastLineNumber
         return addNumber;
     }
 })
@@ -58,22 +63,37 @@ onMounted(() => {
             :title-name="aType.title"
             :id="'aTitle'+index1"/>
 
-        <template v-for="(item,index2) in aType.list" :key="index2">
-            <WebsiteItem
-              :website-item="item"
-              :network-env="networkEnv"
-              :open-animation="openWebsiteAnimation"
-            />
-        </template>
+        <ListWithAnimation>
+            <template v-for="(item,index2) in aType.list" :key="index2">
+                <WebsiteItem
+                    :website-item="item"
+                    :network-env="networkEnv"
+                    :open-animation="openWebsiteAnimation"
+                />
+            </template>
+            <template v-for="i in fillElementNum(aType.list.length)" :key="i+'-hidden'">
+                <WebsiteItem
+                  style="visibility: hidden"
+                  network-env="0"
+                  :website-item="{link: '',imageUrl: '',name: '',desc: '',accessWay: ''}"
+                />
+            </template>
+        </ListWithAnimation>
 
-
-        <template v-for="i in fillElementNum(aType.list.length)" :key="i+'-hidden'">
-            <WebsiteItem
-              style="visibility: hidden"
-              network-env="0"
-              :website-item="{link: '',imageUrl: '',name: '',desc: '',accessWay: ''}"
-            />
-        </template>
+<!--        <template v-for="(item,index2) in aType.list" :key="index2">-->
+<!--            <WebsiteItem-->
+<!--              :website-item="item"-->
+<!--              :network-env="networkEnv"-->
+<!--              :open-animation="openWebsiteAnimation"-->
+<!--            />-->
+<!--        </template>-->
+<!--        <template v-for="i in fillElementNum(aType.list.length)" :key="i+'-hidden'">-->
+<!--            <WebsiteItem-->
+<!--              style="visibility: hidden"-->
+<!--              network-env="0"-->
+<!--              :website-item="{link: '',imageUrl: '',name: '',desc: '',accessWay: ''}"-->
+<!--            />-->
+<!--        </template>-->
 
     </span>
 </div>

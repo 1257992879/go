@@ -6,7 +6,7 @@
             "list": [
                 {
                     "link": "http://hw.neusoft.edu.cn/hw/course/courselist.do",
-                    "vpnLink": "http://hw.webvpn.neusoft.edu.cn/hw/course/courselist.do",
+                    "vpnLink": "http://hw.neusoft.edu.cn/hw/course/courselist.do",
                     "imageUrl": "./WebsiteIcon/hw.neusoft.edu.cn.png",
                     "name": "作业系统",
                     "desc": "提交各科作业以及观看各科微课",
@@ -14,18 +14,19 @@
                 },
                 {
                     "link": "http://newjw.neusoft.edu.cn/jwweb/",
-                    "vpnLink": "http://newjw.webvpn.neusoft.edu.cn/jwweb/",
+                    "vpnLink": "http://newjw.neusoft.edu.cn/jwweb/",
                     "imageUrl": "./WebsiteIcon/newjw.neusoft.edu.cn.png",
                     "name": "教务网站",
                     "desc": "查询成绩、课程表、校历以及选课",
                     "accessWay": "VPN"
                 },
                 {
-                    "link": "http://study1230.neuedu.com",
+                    "link": "https://neustudydl.neumooc.com",
                     "imageUrl": "./WebsiteIcon/study1230.neuedu.com.png",
                     "name": "智慧教育平台",
                     "desc": "刷课、做作业",
                     "accessWay": "公网"
+
                 },
                 {
                     "link": "https://one.neuedu.com/",
@@ -49,8 +50,8 @@
                     "accessWay": "公网"
                 },
                 {
-                    "link": "http://stu.neusoft.edu.cn",
-                    "vpnLink": "http://stu.webvpn.neusoft.edu.cn",
+                    "link": "https://qes.neusoft.edu.cn/qes/portal/index.do",
+                    "vpnLink": "https://qes.neusoft.edu.cn/qes/portal/index.do",
                     "imageUrl": "./WebsiteIcon/stu.neusoft.edu.cn.png",
                     "name": "综合门户网站",
                     "desc": "素质教育管理及评价教师",
@@ -134,7 +135,7 @@
                 },
                 {
                     "link": "http://acm.neusoft.edu.cn",
-                    "vpnLink": "http://acm.webvpn.neusoft.edu.cn",
+                    "vpnLink": "http://acm.neusoft.edu.cn",
                     "imageUrl": "./WebsiteIcon/acm.neusoft.edu.cn.ico",
                     "name": "OJ",
                     "desc": "进行程序设计竞赛练习",

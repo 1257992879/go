@@ -50,8 +50,8 @@ const opacityZeroStyle = ref('')
 
 
 function openWebsiteWithAnimation() {
-    // 如果处于动画中则直接结束
-    if (!animationElClickable.value) return
+    // 如果websiteEl不存在 或者 处于动画中  则直接结束
+    if (!websiteEl.value || !animationElClickable.value) return
     animationElClickable.value = false
 
     // 隐藏滑动条 body设为不可滑动
@@ -67,12 +67,12 @@ function openWebsiteWithAnimation() {
 
     // 显示动画的元素覆盖上去
     // @ts-ignore
-    openAnimationStyle.value = 'position: absolute; top:'+ (websiteEl.value?.offsetTop-10) +'px; left:'+ (websiteEl.value?.offsetLeft-10) +'px;'
+    openAnimationStyle.value = 'position:absolute; top:0px; left:0px;'
 
     // 留个缓冲时间
     setTimeout(()=>{
         // 展开到全屏
-        openAnimationStyle.value = 'position: absolute; width:calc(100vw - 2px); height:calc(100vh - 2px); top:'+document.documentElement.scrollTop+'px; left:0; margin:0; padding:0;'
+        openAnimationStyle.value = 'position:absolute; width:calc(100vw - 2px); height:calc(100vh - 2px); top:calc(-'+websiteEl.value?.parentElement?.style.top+' + '+document.documentElement.scrollTop+'px); left:-'+websiteEl.value?.parentElement?.style.left+'; margin:0; padding:0;'
 
         // 照片移动到中间
         // @ts-ignore
@@ -173,7 +173,7 @@ function stopOpenWebsiteAnimation() {
 #item {
     width: 198px;
     height: 98px;
-    margin: 10px;
+    /*margin: 10px;*/
 
     background-color: rgba(240, 240, 240, 0.5);
     backdrop-filter: blur(8px);

@@ -147,6 +147,7 @@ body{
     /*background-position: center;*/
     /*background-attachment: fixed;*/
     /*background-size: cover;*/
+    overflow-x: hidden;
 }
 html{
     overflow: visible;

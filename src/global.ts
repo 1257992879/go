@@ -7,7 +7,7 @@ axios.defaults.withCredentials = true
 pinyinUtil.addDict(pinyin_dict_withtone)
 
 
-export const $version = '2.1'
+export const $version = '2.2'
 export const $axios = axios
 export const $pinyinUtil = pinyinUtil
 
