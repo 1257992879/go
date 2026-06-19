@@ -8,7 +8,14 @@ defineProps<{
 
 const updateInfo = ref(
     "<div class='updateListBox'>"+
-    "<span class='updateListTitleNew'>Version 2.2</span>" +
+    "<span class='updateListTitleNew'>Version 2.3</span>" +
+    "<span class='updateListDate'>2026年6月19日</span>" +
+    "<span class='updateListContext' style='text-align: center'>" +
+    "本次更新仅更新版本号和更新日志<br>" +
+    "这个项目从大一一直陪伴到毕业(昨天刚举行完毕业典礼，现在我在车站候车)陪伴了我整个大学😭，就想着最后一次更新一下，真的希望我的大学生活现在才刚刚开始😭😭😭<br>" +
+    "</span>" +
+    "<br>" +
+    "<span class='updateListTitleOld'>Version 2.2</span>" +
     "<span class='updateListDate'>2025年4月22日</span>" +
     "<span class='updateListContext' style='text-align: center'>" +
     "1.新增各个元素位置改变时的动画<br>" +
